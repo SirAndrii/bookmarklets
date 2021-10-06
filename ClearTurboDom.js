@@ -15,13 +15,13 @@ javascript:(function () {
             /*Отсеиваем фрилансеров и джунов*/
             if ( text.includes('freelance') 
                 || text.includes('junior')
-                || text.includes('native')
+            
                  ){
                 candidate.remove();
                 continue; 
             }
-            /*В последней работе не указан Реакт*/
-            if (!text.includes('react')) {
+            /*В последней работе не указан Spring*/
+            if (!text.includes('spring')) {
                 candidate.remove();
                 continue;
             }
@@ -34,6 +34,12 @@ javascript:(function () {
                 continue;
             }
             
+            let allExpierence=  [...cand1.querySelectorAll('div.col-md-9 p')].map(element => element.textContent).join("<br>").toLowerCase();
+            let regexpCompany = /jupser|teamvoy|powercode|mindcraft|kernelics|freshlimesoft|rollncode|sloboda|massmedia\sgroup|beetroot/i;
+            if (regexpCompany.test(allExpierence)){
+                candidate.remove();
+                continue;
+            }
         }else{
             candidate.remove();
                 continue;
