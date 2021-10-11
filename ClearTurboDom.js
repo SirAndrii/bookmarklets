@@ -16,21 +16,16 @@ javascript:
             /** последний опыт работы */
             let text=firstP.innerText.toLowerCase(); 
             /** текст с временем работы на последнем месте */
-            let workP=firstP.querySelector('.date-period').innerText; 
+            let workP=firstP.querySelector('.date-period').innerText;
+	    if ( !workP){candidate.remove(); continue;}//не указано время работы
             
-
-            /*Отсеиваем фрилансеров и джунов*/ 
-            if ( text.includes('freela')  || text.includes('self-empl')){ 
+            /*Отсеиваем фрилансеров и senior*/ 
+            if ( text.includes('freela')  || text.includes('self-empl') || text.includes('senior') || text.includes('middle')){ 
                 console.log(`${name} - удалили фрилансер)`);
                 candidate.remove(); 
                 continue;  
             } 
-            /*В последнем опыте нету слова Java*/ 
-            if ( !text.includes('java') && !title.includes('spring') ){ 
-                console.log(`${name} - удалили не JAVA в последней работе или Тайтле)`);
-                candidate.remove(); 
-                continue;  
-            } 
+           
 
             /* Рабоатет меньше 8 месяцев на последней работе*/ 
              
@@ -40,39 +35,23 @@ javascript:
                 candidate.remove(); 
                 continue; 
             } 
-            /* удалим джунов с опытом меньше 2лет*/
-		    if ( !(/(year|рок|рiк)/u.test(workP)) && text.includes('junior') )
+            /* работает больше 2-х лет middle*/
+		    if ( ( /(рiк|рок)/u.test(workP) ) && !( /(1 рiк|2 рiк)/u.test(workP) ) )
                { 
-                console.log(`${name} - удалили - джун проработавший меньше года (${workP})`);
+                console.log(`${name} - работает больше 2-х лет middle (${workP})`);
                 candidate.remove(); 
                 continue; 
             } 
 
             
-            let allExpierence=  [...cand1.querySelectorAll('div.col-md-9 p')].map(element => element.textContent).join("<br>").toLowerCase(); 
-            let regexpCompany = /n-ix|playtika|solve\.com|jupser|teamvoy|powercode|mindcraft|kernelics|freshlimesoft|rollncode|sloboda|massmedia\sgroup|beetroot/i; 
-            if (regexpCompany.test(allExpierence)){ 
-                console.log(`${name} - удалили - Запрещенная компания`);
-                candidate.remove(); 
-                continue; 
-            } 
-
-
-    /*В  тайтле или опте не указан Spring
-             if (!title.includes('spring') && !allExpierence.includes('spring')) { 
-                console.log(`${name} - удалили -  Не содержит спринг (должность - ${title.includes('spring')}, опыт - ${allExpierence.includes('spring')} )`);
-                candidate.remove(); 
-                continue; 
-            }  
-            */
-        }else{ 
+           }else{ 
             console.log(`${name} - не указан опыт`);
             candidate.remove(); 
                 continue; 
         }
         
-        if (!allText.includes('spring')){
-            console.log(`${name} - удалили -  Не содержит спринг `);
+        if ( !( /(yii|zend)/.test(allText) ) && !allText.includes('php') && !( /(javascript|jquery|js|react)/u.test(allText) )  ){
+            console.log(`${name} - удалили -  Не содержит yii или ПХП или JS `);
             candidate.remove(); 
             continue; 
         }
